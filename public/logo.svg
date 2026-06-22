@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <rect width="120" height="120" rx="16" fill="#080b12"/>
+  <path d="M26 18 L57 58 L57 68 L76 68" stroke="#ffffff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M94 18 L63 58 L63 68 L44 68" stroke="#ffffff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="60" cy="74" rx="14" ry="7" fill="#080b12" stroke="#ffffff" stroke-width="2.5"/>
+  <text x="60" y="106" text-anchor="middle" fill="#ffffff" font-family="Barlow Condensed,system-ui,sans-serif" font-size="22" font-weight="700" letter-spacing="4">NHL</text>
+</svg>

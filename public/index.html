@@ -11,13 +11,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/style.css?v=1" />
+  <link rel="stylesheet" href="/style.css?v=2" />
 </head>
 <body>
   <header class="header">
     <div class="header-title">
       <div class="app-brand">
-        <img src="/logo.jpg" alt="" class="app-logo" />
+        <img src="/logo.svg" alt="" class="app-logo" />
         <div class="brand-text">
           <h1>NHL Schedule</h1>
           <div class="subtitle">spoiler-free</div>
@@ -126,16 +126,24 @@
   <div id="hub-overlay" class="hub-overlay">
     <div class="hub-ring">
       <div class="hub-item hub-center">
-        <div class="hub-logo-wrap"><img src="/logo.jpg" class="hub-logo" alt="" /></div>
+        <div class="hub-logo-wrap"><img src="/logo.svg" class="hub-logo" alt="" /></div>
         <div class="hub-label">NHL</div>
       </div>
       <a href="https://match-schedule.onrender.com/" class="hub-item hub-spoke">
-        <div class="hub-logo-wrap"><img src="https://match-schedule.onrender.com/logo.jpg" class="hub-logo" alt="" /></div>
+        <div class="hub-logo-wrap"><img src="https://match-schedule.onrender.com/logo.jpg" class="hub-logo" alt="" onerror="this.style.display='none'" /></div>
         <div class="hub-label">Soccer</div>
       </a>
       <a href="https://nba-schedule-95zo.onrender.com/" class="hub-item hub-spoke">
-        <div class="hub-logo-wrap"><img src="https://nba-schedule-95zo.onrender.com/logo.jpg" class="hub-logo" alt="" /></div>
+        <div class="hub-logo-wrap"><img src="https://nba-schedule-95zo.onrender.com/logo.jpg" class="hub-logo" alt="" onerror="this.style.display='none'" /></div>
         <div class="hub-label">Basketball</div>
+      </a>
+      <a href="https://nfl-schedule-afm2.onrender.com/" class="hub-item hub-spoke">
+        <div class="hub-logo-wrap"><img src="https://nfl-schedule-afm2.onrender.com/logo.jpg" class="hub-logo" alt="" onerror="this.style.display='none'" /></div>
+        <div class="hub-label">NFL</div>
+      </a>
+      <a href="#" class="hub-item hub-spoke" id="hub-mlb">
+        <div class="hub-logo-wrap"><img src="" class="hub-logo" alt="" /></div>
+        <div class="hub-label">MLB</div>
       </a>
     </div>
     <div class="hub-close-hint">tap outside &middot; esc to close</div>
