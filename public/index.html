@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NHL Schedule</title>
+  <meta name="theme-color" content="#003087" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="NHL" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css?v=1" />
+</head>
+<body>
+  <header class="header">
+    <div class="header-title">
+      <div class="app-brand">
+        <img src="/logo.jpg" alt="" class="app-logo" />
+        <div class="brand-text">
+          <h1>NHL Schedule</h1>
+          <div class="subtitle">spoiler-free</div>
+        </div>
+      </div>
+    </div>
+    <div class="header-meta">
+      <div id="my-team-header" class="my-team-header" style="display:none">
+        <img id="my-team-crest" src="" alt="" class="my-team-crest" />
+        <span id="my-team-label" class="my-team-label"></span>
+      </div>
+      <div class="updated" id="updated">Loading…</div>
+      <a href="/help.html" target="_blank" rel="noopener" class="btn-outline help-btn">Help</a>
+      <button class="btn" id="refresh-btn">Refresh</button>
+    </div>
+  </header>
+
+  <div id="alert-banner" class="alert-banner hidden"></div>
+
+  <nav class="controls" aria-label="Filters">
+    <div class="control-row controls-top-bar">
+      <div class="view-slider" id="view-toggle">
+        <div class="view-slider-track"></div>
+        <button class="view-opt active" data-view="schedule">Schedule</button>
+        <button class="view-opt" data-view="teams">Teams</button>
+      </div>
+      <input class="search" id="search" type="text" placeholder="Search team…" />
+      <button class="btn-outline filters-btn" id="filters-toggle">Filters</button>
+    </div>
+
+    <div id="controls-secondary">
+      <div class="control-row">
+        <div class="filter-label">Conference</div>
+        <div class="pill-group" id="conf-filter">
+          <button class="pill active" data-conf="all">All</button>
+          <button class="pill" data-conf="East">Eastern</button>
+          <button class="pill" data-conf="West">Western</button>
+        </div>
+      </div>
+
+      <div class="control-row">
+        <div class="filter-label">Division</div>
+        <div class="pill-group" id="div-filter">
+          <button class="pill active" data-div="all">All</button>
+          <button class="pill" data-div="Atlantic">Atlantic</button>
+          <button class="pill" data-div="Metropolitan">Metro</button>
+          <button class="pill" data-div="Central">Central</button>
+          <button class="pill" data-div="Pacific">Pacific</button>
+        </div>
+      </div>
+
+      <div class="control-row">
+        <div class="filter-label">Status</div>
+        <div class="pill-group" id="status-filter">
+          <button class="pill" data-status="scheduled">Upcoming</button>
+          <button class="pill" data-status="in-progress">Live</button>
+          <button class="pill" data-status="completed">Final</button>
+          <button class="pill" data-status="postponed">Postponed</button>
+        </div>
+      </div>
+
+      <div class="control-row">
+        <label class="select-label">
+          Times shown in
+          <select id="tz-select">
+            <optgroup label="Quick picks">
+              <option value="auto">My time zone (auto)</option>
+              <option value="America/New_York">Eastern Time</option>
+              <option value="America/Chicago">Central Time</option>
+              <option value="America/Denver">Mountain Time</option>
+              <option value="America/Los_Angeles">Pacific Time</option>
+            </optgroup>
+            <optgroup label="More time zones" id="tz-all"></optgroup>
+          </select>
+        </label>
+      </div>
+
+      <div class="control-row toggles">
+        <label class="toggle"><input type="checkbox" id="toggle-scores" /> Show scores</label>
+        <label class="toggle"><input type="checkbox" id="toggle-venue" checked /> Show venue</label>
+        <label class="toggle"><input type="checkbox" id="toggle-broadcast" checked /> Show broadcast</label>
+        <label class="toggle"><input type="checkbox" id="toggle-hide-watched" /> Hide watched</label>
+        <label class="toggle"><input type="checkbox" id="toggle-archive" /> Show archive</label>
+      </div>
+
+      <div class="control-row">
+        <button class="btn-outline" id="favorites-toggle">&starf; Favorite teams</button>
+        <button class="btn-outline" id="players-toggle">&starf; Players</button>
+        <button class="btn-outline" id="saved-toggle">&starf; Saved</button>
+      </div>
+      <div class="control-row favorites-panel hidden" id="favorites-panel"></div>
+      <div class="control-row players-panel hidden" id="players-panel"></div>
+    </div>
+  </nav>
+
+  <main id="list" class="list">
+    <div class="empty">Loading schedule…</div>
+  </main>
+
+  <footer class="footer">
+    Data via ESPN public API &middot; updates every 10 minutes &middot; <a href="/help.html" target="_blank" rel="noopener" style="color:inherit;opacity:0.6;text-decoration:underline">Help</a>
+  </footer>
+
+  <script src="/app.js?v=1"></script>
+
+  <div id="hub-overlay" class="hub-overlay">
+    <div class="hub-ring">
+      <div class="hub-item hub-center">
+        <div class="hub-logo-wrap"><img src="/logo.jpg" class="hub-logo" alt="" /></div>
+        <div class="hub-label">NHL</div>
+      </div>
+      <a href="https://match-schedule.onrender.com/" class="hub-item hub-spoke">
+        <div class="hub-logo-wrap"><img src="https://match-schedule.onrender.com/logo.jpg" class="hub-logo" alt="" /></div>
+        <div class="hub-label">Soccer</div>
+      </a>
+      <a href="https://nba-schedule-95zo.onrender.com/" class="hub-item hub-spoke">
+        <div class="hub-logo-wrap"><img src="https://nba-schedule-95zo.onrender.com/logo.jpg" class="hub-logo" alt="" /></div>
+        <div class="hub-label">Basketball</div>
+      </a>
+    </div>
+    <div class="hub-close-hint">tap outside &middot; esc to close</div>
+  </div>
+  <script>
+  (function(){
+    var overlay=document.getElementById('hub-overlay');
+    var logo=document.querySelector('.app-logo');
+    if(!overlay||!logo)return;
+    logo.style.cursor='pointer';
+    function open(){overlay.classList.add('open');logo.style.opacity='0';}
+    function close(){overlay.classList.remove('open');logo.style.opacity='';}
+    logo.addEventListener('click',function(e){e.stopPropagation();open();});
+    var pt;
+    logo.addEventListener('touchstart',function(){pt=setTimeout(open,500);},{passive:true});
+    logo.addEventListener('touchend',function(){clearTimeout(pt);});
+    logo.addEventListener('touchmove',function(){clearTimeout(pt);},{passive:true});
+    overlay.addEventListener('click',function(e){
+      if(e.target===overlay||e.target.classList.contains('hub-ring')||e.target.classList.contains('hub-close-hint'))close();
+    });
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+  })();
+  </script>
+</body>
+</html>
