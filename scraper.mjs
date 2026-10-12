@@ -88,11 +88,32 @@ function updateChanges(prevGames, newGames, existingChanges) {
   return [...changesById.values()].sort((a, b) => new Date(a.newDate) - new Date(b.newDate))
 }
 
+// ESPN stopped accepting ?dates=YYYYMMDD-YYYYMMDD ranges (HTTP 400, Oct 2026).
+// Whole months (?dates=YYYYMM) still work, so fetch each month in the window
+// and keep only the events that fall inside [from, to].
+async function fetchEspnRange(base, from, to, userAgent, label) {
+  const ymdToUtc = s => Date.UTC(+s.slice(0, 4), +s.slice(4, 6) - 1, +s.slice(6, 8))
+  const lo = ymdToUtc(from) - 86400000
+  const hi = ymdToUtc(to) + 2 * 86400000
+  const month = new Date(Date.UTC(+from.slice(0, 4), +from.slice(4, 6) - 1, 1))
+  const last  = Date.UTC(+to.slice(0, 4), +to.slice(4, 6) - 1, 1)
+  const byId = new Map()
+  while (month.getTime() <= last) {
+    const ym  = `${month.getUTCFullYear()}${String(month.getUTCMonth() + 1).padStart(2, '0')}`
+    const res = await fetch(`${base}?dates=${ym}&limit=1000`, { headers: { 'User-Agent': userAgent } })
+    if (!res.ok) throw new Error(`${label}: HTTP ${res.status}`)
+    const data = await res.json()
+    for (const ev of data.events || []) {
+      const t = new Date(ev.date).getTime()
+      if (t >= lo && t < hi) byId.set(ev.id, ev)
+    }
+    month.setUTCMonth(month.getUTCMonth() + 1)
+  }
+  return { events: [...byId.values()] }
+}
+
 async function fetchNHL(from, to) {
-  const url = `https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard?dates=${from}-${to}&limit=500`
-  const res = await fetch(url, { headers: { 'User-Agent': 'nhl-schedule-app/1.0 (personal use)' } })
-  if (!res.ok) throw new Error(`NHL: HTTP ${res.status}`)
-  const data = await res.json()
+  const data = await fetchEspnRange(`https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard`, from, to, 'nhl-schedule-app/1.0 (personal use)', `NHL`)
 
   return (data.events || []).map(ev => {
     const comp = ev.competitions?.[0] || {}
